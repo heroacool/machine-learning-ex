@@ -84,11 +84,26 @@ J = J + (sum(sum(Theta1(:, 2:end).^2)) + sum(sum(Theta2(:,2:end).^2)) ) * lambda
 
 
 
+for t = 1:m
+    arr = 1:num_labels;
+    b = y(t);
+    yk = (arr == b);    %变换为0，1行向量
+    delta_l3 = a3(:,t) - yk';    %也是列向量
+    
+    delta_l2 = Theta2' * delta_l3;
+    delta_l2 = delta_l2(2:end);
+    delta_l2 = delta_l2 .* sigmoidGradient(z2(:,t));
+    
+    Theta1_grad = Theta1_grad + delta_l2 * X(t,:);
+	Theta2_grad = Theta2_grad + delta_l3 * a2(:, t)';
+end
 
 
+Theta1_grad = Theta1_grad / m;
+Theta2_grad = Theta2_grad / m;
 
-
-
+Theta1_grad(:, 2:end) = Theta1_grad(:, 2:end) + Theta1(:,2:end) * lambda/m;
+Theta2_grad(:, 2:end) = Theta2_grad(:, 2:end) + Theta2(:,2:end) * lambda/m;
 
 
 
