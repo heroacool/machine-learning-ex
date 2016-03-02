@@ -66,12 +66,21 @@ Theta2_grad = zeros(size(Theta2));
 X= [ones(m, 1), X]; %5000 * 401,第一列加上0
 z2 = Theta1 * X';   %
 a2 = sigmoid(z2);   %每一列是一个
+a2 = [ones(1, m); a2];   % a2_0需要添加偏置项目
+z3 = Theta2 * a2;
+a3 = sigmoid(z3);
+sig = a3';
 
-
-
-
-
-
+for i = 1:m
+    yy = zeros(num_labels, 1);  % 10 * 1
+    yy(y(i)) = 1;
+    for k=1:num_labels
+        J = J - yy(k) *log(sig(i, k)) - (1 - yy(k))*log(1 - sig(i,k));
+    end
+end
+J = J / m;
+%此处注意要加上括号呀，整死人了
+J = J + (sum(sum(Theta1(:, 2:end).^2)) + sum(sum(Theta2(:,2:end).^2)) ) * lambda / (2 * m) ;
 
 
 
