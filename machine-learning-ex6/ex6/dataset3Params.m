@@ -23,8 +23,24 @@ sigma = 0.3;
 %        mean(double(predictions ~= yval))
 %
 
+temp = [0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30];
 
+test_num = 8;
 
+min_error = 100000000000.0;
+
+for i = 1:test_num
+    for j = 1:test_num
+        model= svmTrain(X, y, temp(i), @(x1, x2) gaussianKernel(x1, x2, temp(j)));
+        pre_result = svmPredict(model, Xval);
+        current_error = mean(double(pre_result ~= yval));
+        if(current_error < min_error)
+            C = temp(i);
+            sigma = temp(j);
+            min_error = current_error;
+        end
+    end
+end
 
 
 
