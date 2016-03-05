@@ -20,7 +20,7 @@
 
 %% Initialization
 clear ; close all; clc
-
+%test
 %% ================== Part 1: Load Example Dataset  ===================
 %  We start this exercise by using a small dataset that is easily to
 %  visualize
